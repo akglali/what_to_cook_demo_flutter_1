@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
+import 'package:what_to_cook_demo_flutter_1/services/sign_up_screen.dart';
 
-class SignInScreen extends ConsumerStatefulWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+class HomeScreen extends ConsumerStatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  SignInScreenState createState() => SignInScreenState();
+  HomeScreenState createState() => HomeScreenState();
 }
 
-class SignInScreenState extends ConsumerState<SignInScreen> {
+class HomeScreenState extends ConsumerState<HomeScreen> {
   late VideoPlayerController _videoPlayerController;
-
-  final TextEditingController usernameController = TextEditingController();
 
   final positionedKey = GlobalKey();
 
@@ -77,7 +76,7 @@ class SignInScreenState extends ConsumerState<SignInScreen> {
               ),
             ),
             Positioned(
-              bottom: boxHeight + (boxHeight * 0.25),
+              bottom: boxHeight + (boxHeight * 0.30),
               left: size.width / 25,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,7 +112,7 @@ class SignInScreenState extends ConsumerState<SignInScreen> {
             ),
             Positioned(
               // That has post pictures. Left bottom corner
-              bottom: size.height / 25,
+              bottom: size.height / 20,
               right: size.width / 1.9,
               child: Container(
                 decoration: BoxDecoration(
@@ -212,7 +211,7 @@ class SignInScreenState extends ConsumerState<SignInScreen> {
             ),
             Positioned(
               //that position has one of the best chef pictures. (right bottom Corner)
-              bottom: size.height / 25,
+              bottom: size.height / 20,
               left: size.width / 1.9,
               child: Container(
                 decoration: BoxDecoration(
@@ -282,9 +281,20 @@ class SignInScreenState extends ConsumerState<SignInScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     //TODO:I need too add show model bottom view for each
-                    Text(
-                      "Sign Up",
-                      style: theme.textTheme.titleSmall,
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          //container color will be visible
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (context) => SignUpScreen(),
+                        );
+                      },
+                      child: Text(
+                        "Sign Up",
+                        style: theme.textTheme.titleSmall,
+                      ),
                     ),
                     Text(
                       "Sign In",
