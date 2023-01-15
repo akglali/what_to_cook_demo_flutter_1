@@ -23,10 +23,16 @@ class MyThemes {
     primaryColor: const Color(0xffed6e3a),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(
-          const Color(0xffed6e3a),
-        ),
-      ),
+          backgroundColor: MaterialStateProperty.all<Color>(
+            const Color(0xffed6e3a),
+          ),
+          fixedSize: MaterialStateProperty.all<Size>(
+            Size(width, (height * 0.05)),
+          ),
+          textStyle: MaterialStateProperty.all<TextStyle>(TextStyle(
+            color: Colors.white,
+            fontSize: 16 * textWidth,
+          ))),
     ),
     textTheme: TextTheme(
       bodyMedium: TextStyle(
@@ -105,4 +111,3 @@ class MyThemes {
 
   static final darkTheme = ThemeData();
 }
-
