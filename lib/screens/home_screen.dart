@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
-import 'package:what_to_cook_demo_flutter_1/services/sign_up_screen.dart';
+import 'package:what_to_cook_demo_flutter_1/screens/sign_up_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -56,7 +56,8 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
     print('Size: $boxHeight, $boxWidth');
 
@@ -69,15 +70,15 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
               child: FittedBox(
                 fit: BoxFit.fill,
                 child: SizedBox(
-                  width: _videoPlayerController.value.size.width ?? 0,
-                  height: _videoPlayerController.value.size.height ?? 0,
+                  width: _videoPlayerController.value.size.width ,
+                  height: _videoPlayerController.value.size.height ,
                   child: VideoPlayer(_videoPlayerController),
                 ),
               ),
             ),
             Positioned(
               bottom: boxHeight + (boxHeight * 0.30),
-              left: size.width / 25,
+              left: screenWidth / 25,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -96,9 +97,9 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
               //that is bottom which has the back ground
               key: positionedKey,
               bottom: 0,
-              top: size.height / 1.3,
+              top: screenHeight / 1.3,
               child: SizedBox(
-                width: size.width,
+                width: screenWidth,
                 child: Container(
                   decoration: BoxDecoration(
                     color: theme.colorScheme.primaryContainer,
@@ -112,8 +113,8 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
             ),
             Positioned(
               // That has post pictures. Left bottom corner
-              bottom: size.height / 20,
-              right: size.width / 1.9,
+              bottom: screenHeight / 20,
+              right: screenWidth / 1.9,
               child: Container(
                 decoration: BoxDecoration(
                   color: theme.colorScheme.secondaryContainer,
@@ -124,15 +125,15 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: size.height / 5,
-                      width: size.width / 2.2,
+                      height: screenHeight / 5,
+                      width: screenWidth / 2.2,
                       child: Stack(
                         children: [
                           Positioned(
-                            top: size.height / 25,
-                            bottom: size.height / 25,
-                            left: size.width / 50,
-                            right: size.width / 4.9,
+                            top: screenHeight / 25,
+                            bottom: screenHeight / 25,
+                            left: screenWidth / 50,
+                            right: screenWidth / 4.9,
                             //Todo: When A post widget created instead of container will use some example of post
                             child: Container(
                               decoration: BoxDecoration(
@@ -148,10 +149,10 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                             ),
                           ),
                           Positioned(
-                            top: size.height / 25,
-                            bottom: size.height / 25,
-                            left: size.width / 4.9,
-                            right: size.width / 50,
+                            top: screenHeight / 25,
+                            bottom: screenHeight / 25,
+                            left: screenWidth / 4.9,
+                            right: screenWidth / 50,
                             //Todo: When A post widget created instead of container will use some example of post
                             child: Container(
                               decoration: BoxDecoration(
@@ -167,10 +168,10 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                             ),
                           ),
                           Positioned(
-                            top: size.height / 30,
-                            bottom: size.height / 30,
-                            left: size.width / 8,
-                            right: size.width / 8,
+                            top: screenHeight / 30,
+                            bottom: screenHeight / 30,
+                            left: screenWidth / 8,
+                            right: screenWidth / 8,
                             //Todo: When A post widget created instead of container will use some example of post
                             child: Container(
                               decoration: BoxDecoration(
@@ -189,8 +190,8 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     ),
                     Container(
-                      width: size.width / 2.2,
-                      height: size.height / 22,
+                      width: screenWidth / 2.2,
+                      height: screenHeight / 22,
                       decoration: BoxDecoration(
                         // i used textTheme color as container color onl
                         color: theme.colorScheme.onPrimaryContainer,
@@ -211,8 +212,8 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
             ),
             Positioned(
               //that position has one of the best chef pictures. (right bottom Corner)
-              bottom: size.height / 20,
-              left: size.width / 1.9,
+              bottom: screenHeight / 20,
+              left: screenWidth / 1.9,
               child: Container(
                 decoration: BoxDecoration(
                   color: theme.colorScheme.secondaryContainer,
@@ -223,15 +224,15 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: size.height / 5,
-                      width: size.width / 2.2,
+                      height: screenHeight / 5,
+                      width: screenWidth / 2.2,
                       child: Stack(
                         children: [
                           Positioned(
-                            top: size.height / 50,
-                            bottom: size.height / 50,
-                            left: size.width / 15,
-                            right: size.width / 15,
+                            top: screenHeight / 50,
+                            bottom: screenHeight / 50,
+                            left: screenWidth / 15,
+                            right: screenWidth / 15,
                             //Todo:Best Chef photo will be added
                             child: Container(
                               decoration: BoxDecoration(
@@ -250,8 +251,8 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     ),
                     Container(
-                      width: size.width / 2.2,
-                      height: size.height / 22,
+                      width: screenWidth / 2.2,
+                      height: screenHeight / 22,
                       decoration: BoxDecoration(
                         // i used textTheme color as container color onl
                         color: theme.colorScheme.onPrimaryContainer,
@@ -272,11 +273,11 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
             ),
             Positioned(
               // that position has sign up and sign In
-              bottom: size.height / 120,
-              left: size.width / 27,
-              right: size.width / 27,
+              bottom: screenHeight / 120,
+              left: screenWidth / 27,
+              right: screenWidth / 27,
               child: SizedBox(
-                width: size.width,
+                width: screenWidth,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -288,6 +289,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                           backgroundColor: Colors.transparent,
                           context: context,
                           isScrollControlled: true,
+                          enableDrag: false,
                           builder: (context) => SignUpScreen(),
                         );
                       },

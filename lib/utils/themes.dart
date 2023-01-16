@@ -35,6 +35,11 @@ class MyThemes {
           ))),
     ),
     textTheme: TextTheme(
+      //it will be used for textFormField
+      bodySmall: TextStyle(
+        color: Colors.black,
+        fontSize: 13 * textWidth,
+      ),
       bodyMedium: TextStyle(
         color: Colors.black,
         fontSize: 16 * textWidth,
@@ -63,7 +68,7 @@ class MyThemes {
       ),
     ),
     iconTheme: const IconThemeData(
-      color: Color(0xffdbcdb5),
+      color: Color(0xffe9b08e),
     ),
     colorScheme: const ColorScheme.light(
       //bottom color for sign up page
