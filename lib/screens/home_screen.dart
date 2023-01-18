@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
-import 'package:what_to_cook_demo_flutter_1/screens/sign_up_screen.dart';
+import 'package:what_to_cook_demo_flutter_1/screens/sign_up_options.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -34,14 +35,14 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(_getWidgetInfo);
+    SchedulerBinding.instance.addPostFrameCallback(_getWidgetInfo);
     _videoPlayerController =
-        VideoPlayerController.asset("assets/videos/back.mp4")
-          ..initialize().then((_) {
-            _videoPlayerController.play();
-            _videoPlayerController.setVolume(0.0);
-            _videoPlayerController.setLooping(true);
-          });
+    VideoPlayerController.asset("assets/videos/back.mp4")
+      ..initialize().then((_) {
+        _videoPlayerController.play();
+        _videoPlayerController.setVolume(0.0);
+        _videoPlayerController.setLooping(true);
+      });
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
     ));
@@ -70,8 +71,8 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
               child: FittedBox(
                 fit: BoxFit.fill,
                 child: SizedBox(
-                  width: _videoPlayerController.value.size.width ,
-                  height: _videoPlayerController.value.size.height ,
+                  width: _videoPlayerController.value.size.width,
+                  height: _videoPlayerController.value.size.height,
                   child: VideoPlayer(_videoPlayerController),
                 ),
               ),
@@ -290,7 +291,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                           context: context,
                           isScrollControlled: true,
                           enableDrag: false,
-                          builder: (context) => SignUpScreen(),
+                          builder: (context) => SignUpOption(),
                         );
                       },
                       child: Text(
