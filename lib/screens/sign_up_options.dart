@@ -3,7 +3,10 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:what_to_cook_demo_flutter_1/services/user_entry_service.dart';
 import 'dart:io' show Platform;
+
+import 'package:what_to_cook_demo_flutter_1/utils/google_sign_in_api.dart';
 
 class SignUpOption extends ConsumerStatefulWidget {
   const SignUpOption({
@@ -28,12 +31,6 @@ class SignUpOptionState extends ConsumerState<SignUpOption> {
 
   //for google signIn
   late ValueSetter<String> onSignInGoogle;
-  final _googleSignIn = GoogleSignIn(
-    scopes: [
-      'email',
-      'https://www.googleapis.com/auth/userinfo.profile',
-    ],
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -177,24 +174,24 @@ class SignUpOptionState extends ConsumerState<SignUpOption> {
                         //Sign up Google
                         ElevatedButton(
                             onPressed: () async {
-                              print("work");
                               try {
-                                var account = await _googleSignIn.signIn();
-
+                                final account = await GoogleSignInApi.login();
                                 if (account != null) {
-                                  var auth = await account.authentication;
-                                  print(
-                                      "account.email = ${account.email}\n account.authentication= "
-                                          "${account.authentication}\n account.id = ${account.id} "
-                                          "auth.idToken = \n ${auth.idToken} \n"
-                                          "auth.accessToken = ${auth.accessToken} \n"
-                                          "account.displayName = ${account.displayName} \n "
-                                          "account.authHeaders = ${account.authHeaders} \n"
-                                          "account.serverAuthCode = ${account.serverAuthCode} \n"
-                                          "account.photoUrl = ${account.photoUrl}");
+                                  final GoogleSignInAuthentication auth =
+                                      await account.authentication;
+                                /*  print(account.displayName);
+                                  print(account.email);
+                                  print(account.photoUrl);
+                                  print(auth.accessToken);
+                                  print(account.id);
+
+                                  print("idToken ${auth.idToken}");
+                                  print(account.id);*/
                                   if (auth.idToken != null) {
-                                    onSignInGoogle(auth.idToken!);
-                                    print(onSignInGoogle);
+                                    /*   final GoogleAuthProvider provider = GoogleAuthProvider();
+                                    final AuthCredential credential = provider(idToken: idToken, accessToken: accessToken);*/
+                                    await UserEntry()
+                                        .googleSignIn(auth.idToken);
                                   }
                                 }
                               } catch (error) {
@@ -227,6 +224,12 @@ class SignUpOptionState extends ConsumerState<SignUpOption> {
                                 ],
                               ),
                             )),
+                        ElevatedButton(
+                          onPressed: () async {
+                            await GoogleSignInApi.logout();
+                          },
+                          child: Text("logout"),
+                        )
                       ],
                     ),
                   ),
