@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:what_to_cook_demo_flutter_1/providers/sign_up_provider.dart';
+import 'package:what_to_cook_demo_flutter_1/services/user_entry_service.dart';
 import 'package:what_to_cook_demo_flutter_1/widgets/text_form_field_pass_widget.dart';
 import '../widgets/logo_widget.dart';
 import '../widgets/text_form_field_widget.dart';
 import 'package:email_validator/email_validator.dart';
 
-class SignUpScreen extends ConsumerStatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+class SignUpScreenEmail extends ConsumerStatefulWidget {
+  const SignUpScreenEmail({Key? key}) : super(key: key);
 
   @override
-  SignUpScreenState createState() => SignUpScreenState();
+  SignUpScreenEmailState createState() => SignUpScreenEmailState();
 }
 
-class SignUpScreenState extends ConsumerState<SignUpScreen> {
+class SignUpScreenEmailState extends ConsumerState<SignUpScreenEmail> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -77,7 +78,10 @@ class SignUpScreenState extends ConsumerState<SignUpScreen> {
                     decoration: const BoxDecoration(color: Colors.transparent),
                     height: isKeyboardVisible ? screenHeight * 0.30 : 0,
                     curve: Curves.linear,
-                    child: const LogoWidget(),
+                    child: LogoWidget(
+                      height: 300,
+                      width: 300,
+                    ),
                   ),
                   Form(
                       key: _signUpFormKey,
@@ -139,7 +143,7 @@ class SignUpScreenState extends ConsumerState<SignUpScreen> {
                     padding: const EdgeInsets.only(
                         left: 8.0, right: 8.0, bottom: 20),
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_signUpFormKey.currentState!.validate()) {
                           ref
                               .read(emailProvider.notifier)
@@ -147,10 +151,17 @@ class SignUpScreenState extends ConsumerState<SignUpScreen> {
                           ref
                               .read(usernameProvider.notifier)
                               .update((state) => usernameController.text);
+                          ref
+                              .read(passwordProvider.notifier)
+                              .update((state) => passwordController.text);
 
-                          print(
-                              "${ref.watch(emailProvider)} + ${ref.watch(usernameProvider)}+ ${ref.watch(passwordProvider)}");
-                          print("true");
+                          var verify = await UserEntryService()
+                              .verifyEmail(emailController.text);
+                          if (verify != '') {
+                            if(mounted){
+                              buildShowDialog(context, 'OPPPS!', verify);
+                            }
+                          }
                         } else {
                           print("false");
                         }
@@ -169,4 +180,34 @@ class SignUpScreenState extends ConsumerState<SignUpScreen> {
       ),
     );
   }
+}
+
+Future<dynamic> buildShowDialog(
+    BuildContext context, String title, String content) {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(15),
+        ),
+      ),
+      title: Text(
+        //TODO: write something more professional
+        title,
+        style: Theme.of(context).textTheme.bodyMedium,
+      ),
+      content: Text(
+        content,
+        style: Theme.of(context).textTheme.bodySmall,
+      ),
+      actions: [
+        TextButton(
+            child: Text('Ok'),
+            onPressed: () {
+              Navigator.pop(context);
+            })
+      ],
+    ),
+  );
 }

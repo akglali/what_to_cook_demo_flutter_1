@@ -3,10 +3,13 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:what_to_cook_demo_flutter_1/screens/sign_up_screen_email.dart';
 import 'package:what_to_cook_demo_flutter_1/services/user_entry_service.dart';
 import 'dart:io' show Platform;
-
 import 'package:what_to_cook_demo_flutter_1/utils/google_sign_in_api.dart';
+import 'package:what_to_cook_demo_flutter_1/widgets/custom_page_route.dart';
+import 'package:what_to_cook_demo_flutter_1/widgets/logo_widget.dart';
+import '../widgets/elevated_button_widget.dart';
 
 class SignUpOption extends ConsumerStatefulWidget {
   const SignUpOption({
@@ -98,88 +101,98 @@ class SignUpOptionState extends ConsumerState<SignUpOption> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * 0.02,
-                            bottom: MediaQuery.of(context).size.height * 0.02,
-                            left: screenWidth * 0.03),
-                        child: Hero(
-                          tag: "Logo",
-                          child: Container(
-                            height: screenHeight * 0.20,
+                          padding: EdgeInsets.only(left: screenWidth * 0.03),
+                          child: LogoWidget(
+                            height: screenHeight * 0.19,
                             width: screenWidth * 0.20,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                    image: AssetImage(imagePath),
-                                    fit: BoxFit.cover)),
-                          ),
-                        ),
-                      ),
+                          )),
                     ],
                   ),
                   Padding(
                     padding: EdgeInsets.only(
                         left: screenWidth * 0.03, right: screenWidth * 0.03),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text(
+                          "Let's make delicious",
+                          style: theme.textTheme.bodyLarge,
+                        ),
+                        Text(
+                          "Foods!",
+                          style: theme.textTheme.titleLarge,
+                        ),
+                        ElevatedButtonWidget(
+                          onPressed: () async {
+                            Navigator.of(context).push(
+                              CustomPageRoute(
+                                  child: SignUpScreenEmail(),
+                                  direction: AxisDirection.left),
+                            );
+                          },
+                          screenWidth: screenWidth,
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Colors.blueAccent.shade100),
+                          foregroundColor:
+                              MaterialStateProperty.all<Color>(Colors.black),
+                          icon: const Icon(Icons.mail),
+                          text: ' Sign up with Email',
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: screenHeight * 0.02, bottom: 20),
+                          child: Row(children: const <Widget>[
+                            Expanded(
+                              child: Divider(
+                                thickness: 1.7,
+                              ),
+                            ),
+                            Text(" OR "),
+                            Expanded(
+                              child: Divider(
+                                thickness: 1.7,
+                              ),
+                            ),
+                          ]),
+                        ),
                         //sign up with Apple
-                        isPlatformIos
-                            ? ElevatedButton(
-                                onPressed: () async {
-                                  final credential = await SignInWithApple
-                                      .getAppleIDCredential(
-                                    scopes: [
-                                      AppleIDAuthorizationScopes.email,
-                                      AppleIDAuthorizationScopes.fullName,
-                                    ],
-                                    webAuthenticationOptions:
-                                        WebAuthenticationOptions(
-                                      redirectUri: Uri.parse(
-                                          'https://api.dreamwod.app/auth/callbacks/apple-sign-in'),
-                                      clientId: 'com.dreamwod.app.login',
-                                    ),
-                                  );
-                                  //Todo: Will write function to communicate with back-end
-                                  onSignInApple(credential);
-                                  print(credential);
-                                },
-                                style: ButtonStyle(
-                                  foregroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.black),
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.white),
-                                ),
-                                child: RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      const WidgetSpan(
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 2.0),
-                                          child: Icon(Icons.apple),
-                                        ),
-                                      ),
-                                      TextSpan(
-                                          text: ' Sign up with Apple',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: screenWidth * 0.05)),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            : SizedBox(),
+                        ElevatedButtonWidget(
+                          screenWidth: screenWidth,
+                          onPressed: () async {
+                            final credential =
+                                await SignInWithApple.getAppleIDCredential(
+                              scopes: [
+                                AppleIDAuthorizationScopes.email,
+                                AppleIDAuthorizationScopes.fullName,
+                              ],
+                              webAuthenticationOptions:
+                                  WebAuthenticationOptions(
+                                redirectUri: Uri.parse(
+                                    'https://api.dreamwod.app/auth/callbacks/apple-sign-in'),
+                                clientId: 'com.dreamwod.app.login',
+                              ),
+                            );
+                            //Todo: Will write function to communicate with back-end
+                            onSignInApple(credential);
+                            print(credential);
+                          },
+                          text: ' Sign up with Apple',
+                          foregroundColor:
+                              MaterialStateProperty.all<Color>(Colors.black),
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
+                          icon: const Icon(Icons.apple),
+                        ),
                         //Sign up Google
-                        ElevatedButton(
-                            onPressed: () async {
-                              try {
-                                final account = await GoogleSignInApi.login();
-                                if (account != null) {
-                                  final GoogleSignInAuthentication auth =
-                                      await account.authentication;
-                                /*  print(account.displayName);
+                        ElevatedButtonWidget(
+                          screenWidth: screenWidth,
+                          onPressed: () async {
+                            try {
+                              final account = await GoogleSignInApi.login();
+                              if (account != null) {
+                                final GoogleSignInAuthentication auth =
+                                    await account.authentication;
+                                /*print(account.displayName);
                                   print(account.email);
                                   print(account.photoUrl);
                                   print(auth.accessToken);
@@ -187,49 +200,26 @@ class SignUpOptionState extends ConsumerState<SignUpOption> {
 
                                   print("idToken ${auth.idToken}");
                                   print(account.id);*/
-                                  if (auth.idToken != null) {
-                                    /*   final GoogleAuthProvider provider = GoogleAuthProvider();
-                                    final AuthCredential credential = provider(idToken: idToken, accessToken: accessToken);*/
-                                    await UserEntry()
-                                        .googleSignIn(auth.idToken);
-                                  }
+                                if (auth.idToken != null) {
+                                  /*   final GoogleAuthProvider provider = GoogleAuthProvider();
+                final AuthCredential credential = provider(idToken: idToken, accessToken: accessToken);*/
+                                  await UserEntryService().googleSignIn(auth.idToken);
                                 }
-                              } catch (error) {
-                                print(error);
                               }
-                            },
-                            style: ButtonStyle(
-                              foregroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.black),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.greenAccent),
-                            ),
-                            child: RichText(
-                              text: TextSpan(
-                                children: [
-                                  const WidgetSpan(
-                                    child: Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 2.0),
-                                      child: Icon(
-                                        MaterialCommunityIcons.google,
-                                      ),
-                                    ),
-                                  ),
-                                  TextSpan(
-                                      text: ' Sign up with Google',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: screenWidth * 0.05)),
-                                ],
-                              ),
-                            )),
-                        ElevatedButton(
-                          onPressed: () async {
-                            await GoogleSignInApi.logout();
+                            } catch (error) {
+                              print(error);
+                            }
                           },
-                          child: Text("logout"),
-                        )
+                          text: ' Sign up with Google',
+                          foregroundColor:
+                              MaterialStateProperty.all<Color>(Colors.black),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Colors.greenAccent),
+                          icon: const Icon(
+                            MaterialCommunityIcons.google,
+                          ),
+                        ),
+
                       ],
                     ),
                   ),

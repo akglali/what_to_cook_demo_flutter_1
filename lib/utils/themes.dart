@@ -45,6 +45,11 @@ class MyThemes {
         fontSize: 16 * textWidth,
         fontWeight: FontWeight.bold,
       ),
+      bodyLarge: TextStyle(
+        color: Colors.black54,
+        fontSize: 24 * textWidth,
+        fontWeight: FontWeight.w600,
+      ),
       labelMedium: TextStyle(
         color: const Color(0xffdbcdb5),
         fontSize: 16 * textWidth,
@@ -77,6 +82,8 @@ class MyThemes {
       secondaryContainer: Color(0xffeeeeee),
       //that color is for bottom of the post and chef picture color.
       onPrimaryContainer: Colors.white,
+      //background color of loading screen
+      background: Colors.white,
     ),
   );
 
