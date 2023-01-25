@@ -35,7 +35,6 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback(_getWidgetInfo);
     _videoPlayerController =
     VideoPlayerController.asset("assets/videos/back.mp4")
       ..initialize().then((_) {
@@ -46,6 +45,8 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
     ));
+    SchedulerBinding.instance.addPostFrameCallback(_getWidgetInfo);
+
   }
 
   @override

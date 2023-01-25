@@ -3,9 +3,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:what_to_cook_demo_flutter_1/providers/sign_up_provider.dart';
 import 'package:what_to_cook_demo_flutter_1/services/user_entry_service.dart';
 import 'package:what_to_cook_demo_flutter_1/widgets/text_form_field_pass_widget.dart';
+import '../widgets/custom_page_route.dart';
 import '../widgets/logo_widget.dart';
 import '../widgets/text_form_field_widget.dart';
 import 'package:email_validator/email_validator.dart';
+
+import 'confirmation_screen.dart';
 
 class SignUpScreenEmail extends ConsumerStatefulWidget {
   const SignUpScreenEmail({Key? key}) : super(key: key);
@@ -158,9 +161,17 @@ class SignUpScreenEmailState extends ConsumerState<SignUpScreenEmail> {
                           var verify = await UserEntryService()
                               .verifyEmail(emailController.text);
                           if (verify != '') {
-                            if(mounted){
+                            if (mounted) {
                               buildShowDialog(context, 'OPPPS!', verify);
                             }
+                          } else {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                CustomPageRoute(
+                                  child: ConfirmationScreen(
+                                    email: emailController.text,
+                                  ),
+                                ),
+                                (route) => false);
                           }
                         } else {
                           print("false");

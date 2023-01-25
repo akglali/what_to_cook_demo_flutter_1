@@ -203,7 +203,12 @@ class SignUpOptionState extends ConsumerState<SignUpOption> {
                                 if (auth.idToken != null) {
                                   /*   final GoogleAuthProvider provider = GoogleAuthProvider();
                 final AuthCredential credential = provider(idToken: idToken, accessToken: accessToken);*/
-                                  await UserEntryService().googleSignIn(auth.idToken);
+                                  var verify= await UserEntryService().googleSignIn(auth.idToken);
+                                  if (verify!='Welcome to the paradise!'){
+                                    if(mounted){
+                                      buildShowDialog(context, 'OPPPS!', verify);
+                                    }
+                                  }
                                 }
                               }
                             } catch (error) {
@@ -231,4 +236,34 @@ class SignUpOptionState extends ConsumerState<SignUpOption> {
       ),
     );
   }
+}
+
+Future<dynamic> buildShowDialog(
+    BuildContext context, String title, String content) {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(15),
+        ),
+      ),
+      title: Text(
+        //TODO: write something more professional
+        title,
+        style: Theme.of(context).textTheme.bodyMedium,
+      ),
+      content: Text(
+        content,
+        style: Theme.of(context).textTheme.bodySmall,
+      ),
+      actions: [
+        TextButton(
+            child: Text('Ok'),
+            onPressed: () {
+              Navigator.pop(context);
+            })
+      ],
+    ),
+  );
 }

@@ -26,7 +26,7 @@ class UserEntryService {
   }
 
   Future<String> emailSignUp(String email, username, password, code) async {
-    var url = Uri.parse('${domain}User/');
+    var url = Uri.parse('${domain}User');
     var response = await http.post(url,
         body: json.encode(
           {
@@ -60,10 +60,10 @@ class UserEntryService {
           "accept": "application/json",
         });
     var body = jsonDecode(response.body);
-    print(body);
     if (response.statusCode != 200) {
       return body["Error"];
     }
     return '';
   }
+
 }
